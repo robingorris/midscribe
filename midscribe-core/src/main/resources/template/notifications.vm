@@ -1,7 +1,5 @@
 ## FUNCTION LIBRARIES
 
-== Notifications
-
 #set($sysConfig=$processor.loadSystemConfiguration())
 $sysConfig
 #foreach($sys in $sysConfig)
@@ -10,7 +8,7 @@ $sysConfig
 
 #set($objects=$sys.getNotificationConfiguration().getHandler())
 #if($objects)
-
+== Notifications
 [cols=3,options=header]
 |===
 |Handler name
@@ -89,11 +87,10 @@ $sysConfig
 #parse("/template/notification.vm")
 #end
 
-== Message transport configuration
-
 #set($transportConfig=$sys.getMessageTransportConfiguration())
 
 #if($transportConfig)
+== Message transport configuration
 #if($transportConfig.getMail())
 === Mail transport
 #foreach($mail in $transportConfig.getMail())
