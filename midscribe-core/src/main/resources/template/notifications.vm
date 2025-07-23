@@ -1,7 +1,7 @@
 ## FUNCTION LIBRARIES
 
 #set($sysConfig=$processor.loadSystemConfiguration())
-$sysConfig
+## $sysConfig
 #foreach($sys in $sysConfig)
 
 #if(!$sys.isEmpty())
