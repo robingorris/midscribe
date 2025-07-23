@@ -4,10 +4,173 @@ Object OID : **$object.getOid()**
 
 $!processor.translator($!object.getDescription())
 
-$!processor.translator($!utils.stripIndent($object.getDocumentation()))
+#set($authmodules = $object.getAuthentication().getModules())
+#if($authmodules)
+==== Authentication modules
+
+#set($loginformmodules = $authmodules.getLoginForm())
+#if($loginformmodules)
+===== Login form authentication modules
+#foreach($formmod in $loginformmodules)
+Identifier: $!processor.translator($!formmod.getIdentifier())
+$!processor.translator($!formmod.getDescription())
+#end
+#end
+
+#set($httpbasicmodules = $authmodules.getHttpBasic())
+#if($httpbasicmodules)
+===== HTTP Basic authentication modules
+#foreach($basicmod in $httpbasicmodules)
+Identifier: $!processor.translator($!basicmod.getIdentifier())
+$!processor.translator($!basicmod.getDescription())
+#end
+#end
+
+
+#set($oidcmodules = $authmodules.getOidc())
+#if($oidcmodules)
+===== OpenID Connect authentication modules
+#foreach($oidcmod in $oidcmodules)
+Identifier: $oidcmod.getIdentifier()
+
+#foreach($client in $oidcmod.getClient())
+
+[cols=2,options=header]
+|===
+|Parameter
+|Value
+
+|registration Id
+#if($client.getRegistrationId())
+|$!processor.translator($client.getRegistrationId())
+#else
+| default
+#end
+
+|client Id
+#if($client.getClientId())
+|$!processor.translator($client.getClientId())
+#else
+| default
+#end
+
+|scope
+#if($client.getScope())
+|$!processor.translator($client.getScope())
+#else
+| default
+#end
+
+#if($client.getNameOfUsernameAttribute())
+|name of username attribute
+|$!processor.translator($client.getNameOfUsernameAttribute())
+#end
+
+#if($client.isUsePkce())
+|Use PKCE
+|$!processor.translator($client.getUsePkce())
+#end
+
+#set($provider = $client.getOpenIdProvider())
+#if($provider)
+#if($provider.getAuthorizationUri())
+|OpenId Provider Authorization URI
+|$!processor.translator($provider.getAuthorizationUri())
+#end
+#if($provider.getTokenUri())
+|OpenId Provider Token URI
+|$!processor.translator($provider.getTokenUri())
+#end
+#if($provider.getUserInfoUri())
+|OpenId Provider UserInfo URI
+|$!processor.translator($provider.getUserInfoUri())
+#end
+#if($provider.getJwkSetUri())
+|OpenId Provider JWKSet URI
+|$!processor.translator($provider.getJwkSetUri())
+#end
+#if($provider.getIssuerUri())
+|OpenId Provider Issuer URI
+|$!processor.translator($provider.getIssuerUri())
+#end
+#if($provider.getEndSessionUri())
+|OpenId Provider End Session URI
+|$!processor.translator($provider.getEndSessionUri())
+#end
+
+#end
+
+|===
+#end
+#end
+#end
+#end
+
+#set($sequences = $object.getAuthentication().getSequence())
+#if($sequences)
+==== Authentication sequences
+#foreach($seq in $sequences)
+===== Authentication Sequence ID #[[#]]#$!processor.translator($seq.getId())
+[cols=2,options=header]
+|===
+|Parameter
+|Value
+
+#if($seq.getIdentifier())
+|Identifier
+|$!processor.translator($seq.getIdentifier())
+#end
+#if($seq.getDisplayName())
+|Display name
+|$!processor.translator($seq.getDisplayName())
+#end
+#if($seq.getDescription())
+|Description
+|$!processor.translator($seq.getDescription())
+#end
+
+#set($channel = $seq.getChannel())
+#if($channel)
+
+#if($channel.getChannelId())
+|Channel ID
+|$!processor.translator($channel.getChannelId())
+#end
+|Default
+|$!processor.translator($channel.getDefault())
+#if($channel.getUrlSuffix())
+|URL suffix
+|$!processor.translator($channel.getUrlSuffix())
+#end
+
+
+#end
+
+|===
+
+#set($seqmodules = $seq.getModule())
+#if($seqmodules)
+**Modules**
+
+[cols=3,options=header]
+|===
+|Authentication module identifier
+|Order
+|Neccessity
+#foreach($seqmod in $seqmodules)
+|$!processor.translator($seqmod.getIdentifier())
+|$!processor.translator($seqmod.getOrder())
+|$!processor.translator($seqmod.getNecessity())
+|===
+#end
+#end
+
+#end
+#end
+
 #set($password = $object.getCredentials().getPassword())
 #if($password)
-**Credentials - password**
+==== Credentials - password
 
 [cols=2,options=header]
 |===
@@ -57,4 +220,6 @@ $!processor.translator($!utils.stripIndent($object.getDocumentation()))
 #end
 
 |===
+
+$!processor.translator($!utils.stripIndent($object.getCredentials().getPassword().getDocumentation()))
 #end
