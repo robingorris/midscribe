@@ -204,6 +204,7 @@ $utils.stripIndent($processor.serialize($object.activity.work.iterativeScripting
 |Execution mode
 |$!processor.translator($object.activity.execution.mode)
 #else
+|Execution mode
 |full
 #end
 |===
@@ -280,6 +281,7 @@ $utils.stripIndent($processor.serialize($object.activity.work.recomputation.obje
 |Execution mode
 |$!processor.translator($object.activity.execution.mode)
 #else
+|Execution mode
 |full
 #end
 |===
