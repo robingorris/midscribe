@@ -19,38 +19,11 @@ $!processor.translator($!utils.stripIndent($object.getDocumentation()))
 #parse("/template/iterationSpecification.vm")
 #end
 
-#set($items = $object.getItem())
-#if ($items)
-==== Items
-#set($lookUpTables=$processor.loadLookupTables())
-
-#foreach($item in $items)
-[discrete]
-==== $!processor.translator($item.ref)
-
-
-
-#foreach($limit in $item.getLimitations())
-[cols=2,options=header]
-|===
-|Property |Value
-
-|Add | $!processor.translator($limit.getAccess().isAdd())
-|Modify | $!processor.translator($limit.getAccess().isModify())
-|Read | $!processor.translator($limit.getAccess().isRead())
-
-|===
-#end
-#if($item.getValueEnumerationRef().getOid())
-Lookup table OID: <<oid_$item.getValueEnumerationRef().getOid(),**$item.getValueEnumerationRef().getOid()**>>
-#end
-
-#end
-#end
+#parse("/template/items.vm")
 
 #set($mappings = $object.getMapping())
 #if ($mappings)
-==== Mappings
+==== Object-Level Mappings
 #parse("/template/mappings.vm")
 #end
 

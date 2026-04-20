@@ -1,0 +1,32 @@
+## main object: $item (ItemType)
+
+===== $!processor.translator($item.ref)
+
+**Description:**
+$!processor.translator($item.getDescription())
+
+**Documentation:**
+$!processor.translator($utils.stripIndent($item.getDocumentation()))
+
+#if($item.getMapping())
+**Mappings:**
+#set($mappings = $item.getMapping())
+#parse("/template/mappings.vm")
+#end
+
+#if($item.getValueEnumerationRef().getOid())
+**Lookup Table OID:**
+&lt;&lt;oid_$item.getValueEnumerationRef().getOid(),**$item.getValueEnumerationRef().getOid()**&gt;&gt;
+#end
+#if($item.getLimitations() && $item.getLimitations().size() > 0)
+**Limitations:**
+[cols=2,options=header]
+|===
+|Property |Value
+#foreach($limit in $item.getLimitations())
+|Add | $!processor.translator($limit.getAccess().isAdd())
+|Modify | $!processor.translator($limit.getAccess().isModify())
+|Read | $!processor.translator($limit.getAccess().isRead())
+#end
+|===
+#end
